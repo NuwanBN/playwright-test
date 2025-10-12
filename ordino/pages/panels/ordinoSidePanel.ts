@@ -7,7 +7,7 @@ export class OrdinoSidePanel {
    
     private txt_search = "//input[@placeholder='Search']";
     private btn_menu = "//ul[@class='oxd-main-menu']//span"
-    private headerTitle = ".oxd-text.oxd-text--h6.oxd-topbar-header-breadcrumb-module";
+    private headerTitle = ".oxd-module";
 
     page: Page;
 
