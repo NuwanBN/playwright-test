@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "declaration": true,
+    "outDir": "dist",
+    "strict": true,
+    "allowJs": true,
+    "noEmit": false,
+    "resolveJsonModule": true,
+    "types": ["node"],
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "baseUrl": "./"
+  },
+  "exclude": ["node_modules", "dist"],
+  "typedocOptions": {
+    "entryPoints": ["index.ts"],
+    "out": "docs"
+  }
+}
