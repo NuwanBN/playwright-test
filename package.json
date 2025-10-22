@@ -7,7 +7,10 @@
     "oi:run:test": "node ordino.initialize.js --runTest",
     "oi:open:test": "node ordino.initialize.js --openTest",
     "oi:debug:test": "node ordino.initialize.js --debugTest",
-    "oi:open:report": "node ordino.initialize.js --openReport"
+    "oi:open:report": "node ordino.initialize.js --openReport",
+    "generate:mochawesome": "node convert-to-mochawesome.js",
+    "merge:mochawesome": "node merge-mochawesome-reports.js",
+    "open:mochawesome": "start ordino-report/mochawesome-report/mochawesome.html"
   },
   "keywords": [
     "ordino.ai",
@@ -17,10 +20,13 @@
   "license": "MIT",
   "devDependencies": {
     "@ordino.ai/ordino-engine": "1.0.0-pw.16",
-    "typescript": "^5.2.2",
-    "dotenv": "^16.4.7",
+    "@playwright/test": "^1.52.0",
     "allure-commandline": "^2.34.0",
     "allure-playwright": "^3.2.2",
-    "@playwright/test": "^1.52.0"
+    "dotenv": "^16.4.7",
+    "mochawesome": "^7.1.4",
+    "mochawesome-merge": "^5.0.0",
+    "mochawesome-report-generator": "^6.3.0",
+    "typescript": "^5.2.2"
   }
 }

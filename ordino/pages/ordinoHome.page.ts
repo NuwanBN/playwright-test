@@ -10,7 +10,7 @@ export class HomePage {
     sidePanel: OrdinoSidePanel;
 
     private btn_profile = '.MuiAvatar-root';
-    private btn_logout = '#logout-button';
+    private btn_logout = '#logout-button4';
 
     constructor(page: Page) {
         this.page = page;

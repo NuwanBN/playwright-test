@@ -21,7 +21,14 @@ const config: PlaywrightTestConfig = {
     ['json', { 
       outputFile: 'ordino-report/test-results.json' 
     }],
+    ['html', {
+      outputFolder: 'ordino-report/playwright-html-report',
+      open: 'never'
+    }],
     ['list'],
+    ['junit', { 
+      outputFile: 'ordino-report/junit-results.xml' 
+    }],
     ['allure-playwright', {
       detail: true,
       outputFolder: "ordino-report/allure-results",
@@ -37,12 +44,12 @@ const config: PlaywrightTestConfig = {
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'https://opensource-demo.orangehrmlive.com/',
-    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
-    /* Capture screenshot after each test */
+    /* Collect trace only for failed tests - Options: 'on', 'off', 'retain-on-failure', 'on-first-retry' */
+    trace: 'retain-on-failure',
+    /* Capture screenshot only on failure */
     screenshot: 'only-on-failure',
     /* Report video on failure */
-    video: 'on-first-retry',
+    video: 'retain-on-failure',
     extraHTTPHeaders: {
       'Accept': 'application/json',
     },
@@ -59,36 +66,11 @@ const config: PlaywrightTestConfig = {
       name: 'API Tests',
       testMatch: /.*\api\*.spec\.ts/,
     },
-    //,
-   /*  {
-      name: 'firefox',
-      use: {
-        ...devices['Desktop Firefox'],
-      },
-    },
-    {
-      name: 'webkit',
-      use: {
-        ...devices['Desktop Safari'],
-      },
-    },
-    {
-      name: 'Mobile Chrome',
-      use: {
-        ...devices['Pixel 5'],
-      },
-    },
-    {
-      name: 'Mobile Safari',
-      use: {
-        ...devices['iPhone 12'],
-      }, 
-    },*/
   ],
   /* Run specific files in different workers */
   workers: 1,
-  /* Report outputs folder */
-  outputDir: 'playwright-report',
+  /* Report outputs folder - Contains test artifacts (screenshots, videos, traces) */
+  outputDir: 'ordino-report/trace-report',
 };
 
 export default config;

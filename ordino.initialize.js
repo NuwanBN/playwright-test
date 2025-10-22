@@ -77,14 +77,14 @@ async function runI() {
   try {
     deletePackageLock()
     const config = await getConfig()
-    arguments = args
+    const commandArgs = args
       .filter((filter) => filter !== '--initialize')
       .join(' ')
     execSync(
       'npm install --registry=https://registry.npmjs.org/ --//registry.npmjs.org/:_authToken=' +
       config.token +
       ' ' +
-      arguments,
+      commandArgs,
       { stdio: 'inherit' }
     )
   } catch (error) {
@@ -99,10 +99,10 @@ async function runTest(isAuthenticated) {
       ...process.env,
       ORDINO_AUTHENTICATED: isAuthenticated
     };
-    const arguments = args
+    const commandArgs = args
       .filter((filter) => filter !== '--runTest')
       .join(' ')
-    execSync('npx playwright test --config=ordino.config.ts ' + arguments, {
+    execSync('npx playwright test --config=ordino.config.ts ' + commandArgs, {
       stdio: 'inherit',
       env: childEnv
     })
@@ -116,10 +116,10 @@ async function openTest(isAuthenticated) {
       ...process.env,
       ORDINO_AUTHENTICATED: isAuthenticated
     };
-    const arguments = args
+    const commandArgs = args
       .filter((filter) => filter !== '--openTest')
       .join(' ')
-    execSync('npx playwright test --headed --config=ordino.config.ts ' + arguments, {
+    execSync('npx playwright test --headed --config=ordino.config.ts ' + commandArgs, {
       stdio: 'inherit',
       env: childEnv
     })
@@ -133,10 +133,10 @@ async function debugTest(isAuthenticated) {
       ...process.env,
       ORDINO_AUTHENTICATED: isAuthenticated
     };
-    const arguments = args
+    const commandArgs = args
       .filter((filter) => filter !== '--ui')
       .join(' ')
-    execSync('npx playwright test --ui --config=ordino.config.ts ' + arguments, {
+    execSync('npx playwright test --ui --config=ordino.config.ts ' + commandArgs, {
       stdio: 'inherit',
       env: childEnv
     })
@@ -150,10 +150,10 @@ async function openReport(isAuthenticated) {
       ...process.env,
       ORDINO_AUTHENTICATED: isAuthenticated
     };
-    const arguments = args
+    const commandArgs = args
       .filter((filter) => filter !== '--openReport')
       .join(' ')
-    execSync('npx allure generate allure-results --clean -o ordino-report/allure-report && move allure-results ordino-report/ 2>nul || true && allure serve ./ordino-report && allure generate ./ordino-report/allure-results ' + arguments, {
+    execSync('npx allure generate allure-results --clean -o ordino-report/allure-report && move allure-results ordino-report/ 2>nul || true && allure serve ./ordino-report && allure generate ./ordino-report/allure-results ' + commandArgs, {
       stdio: 'inherit',
       env: childEnv
     })
@@ -193,14 +193,22 @@ function loadEnv(environment = '.env') {
 
 async function convertToMochawesome() {
   try {
-    const enginePackageRoot = path.dirname(require.resolve('@ordino.ai/ordino-engine/package.json'));
-    const pathToScript = path.join(enginePackageRoot, 'cloud-test', 'convert-to-mochawesome.js');
-    execSync(`node ${pathToScript}`, {
+    console.log('Converting test results to Mochawesome format...');
+    execSync('node convert-to-mochawesome.js', {
       stdio: 'inherit',
     });
   } catch (error) {
-    console.error(error.message)
-    process.stdout.write(error.message);
+    console.error('Error converting to Mochawesome:', error.message);
+    // Try fallback to original conversion
+    try {
+      const enginePackageRoot = path.dirname(require.resolve('@ordino.ai/ordino-engine/package.json'));
+      const pathToScript = path.join(enginePackageRoot, 'cloud-test', 'convert-to-mochawesome.js');
+      execSync(`node ${pathToScript}`, {
+        stdio: 'inherit',
+      });
+    } catch (fallbackError) {
+      console.error('Fallback conversion also failed:', fallbackError.message);
+    }
   }
 }
 
